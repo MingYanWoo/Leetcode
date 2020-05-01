@@ -7,8 +7,6 @@ maps = [
 ]
 maps = list([list(s) for s in maps])
 
-# print(maps)
-
 dice = [1, 6, 5, 2, 3, 4] #up, bottom, left, right, front, back
 
 def change(i):
@@ -62,9 +60,7 @@ def main():
 			if maps[i][j] == 'S':
 				start = (i, j)
 				break
-
 	dfs(start[0], start[1])
-
 	print(maps)
 
 
