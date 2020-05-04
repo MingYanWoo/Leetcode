@@ -27,7 +27,7 @@
 # 输出样例：
 # 8
 
-
+# 二维数组
 import sys
 
 V = [0]
@@ -51,3 +51,28 @@ for i in range(1, n+1):
             dp[i][j] = max(dp[i][j], dp[i-1][j-V[i]]+W[i])
 
 print(max(dp[n][:]))
+
+
+# 一维数组
+import sys
+
+V = [0]
+W = [0]
+
+n, cap = map(int, sys.stdin.readline().split())
+
+for line in sys.stdin:
+    v, w = map(int, line.split())
+    V.append(v)
+    W.append(w)
+
+# print(n, cap, V, W)
+
+dp = [0 for _ in range(cap+1)]
+
+for i in range(1, n+1):
+    for j in range(cap, V[i]-1, -1):
+        if j >= V[i]:
+            dp[j] = max(dp[j], dp[j-V[i]]+W[i])
+
+print(max(dp[:]))
