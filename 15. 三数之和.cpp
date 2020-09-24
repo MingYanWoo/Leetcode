@@ -41,3 +41,47 @@ public:
         return res;
     }
 };
+
+
+
+// K Sum
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        return nSum(nums, 3, 0, 0);
+    }
+
+    vector<vector<int>> nSum(vector<int>& nums, int n, int start, int target) {
+        int sz = nums.size();
+        vector<vector<int>> res;
+        if(n < 2 || sz < n) return res;
+        if(n == 2) {
+            int left = start, right = sz - 1;
+            while(left < right) {
+                int sum = nums[left] + nums[right];
+                int leftV = nums[left], rightV = nums[right];
+                if(sum < target) {
+                    while(left < right && nums[left] == leftV) left++;
+                }else if(sum > target) {
+                    while(left < right && nums[right] == rightV) right--;
+                }else {
+                    res.push_back({nums[left], nums[right]});
+                    while(left < right && nums[left] == leftV) left++;
+                    while(left < right && nums[right] == rightV) right--;
+                }
+            }
+        }else {
+            for(int i = start; i < sz; i++) {
+                auto sub = nSum(nums, n-1, i+1, target-nums[i]);
+
+                for(auto s : sub) {
+                    s.push_back(nums[i]);
+                    res.push_back(s);
+                }
+                while(i < sz - 1 && nums[i] == nums[i+1]) i++;
+            }
+        }
+        return res;
+    }
+};
