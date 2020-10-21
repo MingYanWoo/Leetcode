@@ -95,3 +95,53 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+
+
+
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        auto it = hash.find(key);
+        if(it == hash.end())
+            return -1;
+        
+        auto target = it->second;
+        pair<int,int> node(target->first, target->second);
+        dlist.push_front(node);
+        dlist.erase(target);
+        hash.erase(key);
+        hash.emplace(key, dlist.begin());
+        return node.second;
+    }
+    
+    void put(int key, int value) {
+        auto it = hash.find(key);
+        if(it != hash.end()) {
+            dlist.erase(it->second);
+            hash.erase(key);
+        }
+        pair<int,int> node(key, value);
+        dlist.push_front(node);
+        hash.emplace(key, dlist.begin());
+
+        if(dlist.size() > cap) {
+            hash.erase(dlist.back().first);
+            dlist.pop_back();
+        }
+    }
+private:
+    int cap = 0;
+    list<pair<int,int>> dlist;
+    unordered_map<int, list<pair<int,int>>::iterator> hash;
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
